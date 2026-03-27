@@ -27,7 +27,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Build APKs
+      - name: Build APKss
         shell: bash {0}
         env:
           PACKAGE_VARIANT: ${{ matrix.package_variant }}
