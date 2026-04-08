@@ -60,20 +60,23 @@ android {
         manifestPlaceholders.TERMUX_TASKER_APP_NAME = "Termux:Tasker"
         manifestPlaceholders.TERMUX_WIDGET_APP_NAME = "Termux:Widget"
 
-        externalNativeBuild {
-            ndkBuild {
-                cFlags "-std=c11", "-Wall", "-Wextra", "-Werror", "-Os", "-fno-stack-protector", "-Wl,--gc-sections"
-            }
+         externalNativeBuild {
+        ndkBuild {
+            // AÑADE ESTA LÍNEA para que solo intente compilar aarch64
+            abiFilters "arm64-v8a"
+            cFlags "-std=c11", "-Wall", "-Wextra", "-Werror", "-Os", "-fno-stack-protector", "-Wl,--gc-sections"
         }
+    }
 
-        splits {
-            abi {
-                enable ((gradle.startParameter.taskNames.any { it.contains("Debug") } && splitAPKsForDebugBuilds == "1") ||
-                    (gradle.startParameter.taskNames.any { it.contains("Release") } && splitAPKsForReleaseBuilds == "1"))
-                reset ()
-                include 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
-                universalApk true
-            }
+    splits {
+        abi {
+            enable ((gradle.startParameter.taskNames.any { it.contains("Debug") } && splitAPKsForDebugBuilds == "1") ||
+                (gradle.startParameter.taskNames.any { it.contains("Release") } && splitAPKsForReleaseBuilds == "1"))
+            reset ()
+            // Deja solo arm64-v8a aquí
+            include 'arm64-v8a'
+            // Cambia universalApk a false
+            universalApk false
         }
     }
 
@@ -85,6 +88,7 @@ android {
             keyPassword 'xrj45yWGLbsO7W0v'
         }
     }
+
 
     buildTypes {
         release {
